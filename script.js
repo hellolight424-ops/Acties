@@ -89,18 +89,25 @@ document.querySelectorAll('.timer').forEach(timer => {
 });
 
 
+
 /****************************
   ADMIN CONTROLE (WACHTWOORD)
 *****************************/
-const ADMIN_PASSWORD = "654235235131322345243"; // <-- wijzig dit naar je eigen wachtwoord
+const ADMIN_PASSWORD = "654235235131322345243"; // pas aan
 
-function showAdmin(){
+function showAdmin() {
   const input = prompt("Voer admin wachtwoord in:");
   if(input !== ADMIN_PASSWORD){
-    return; // niet admin, niks tonen
+    return; // niet admin
   }
 
-  const adminPanel = document.getElementById("admin-panel");
+  // Controleer of adminPanel al bestaat, anders maak een nieuwe
+let adminPanel = document.getElementById("admin-panel");
+if(!adminPanel) {
+  adminPanel = document.createElement("div");
+  adminPanel.id = "admin-panel";
+  document.body.prepend(adminPanel); // bovenaan body toevoegen
+}
 
   // Toevoeg knop
   const addBtn = document.createElement("button");
@@ -119,7 +126,7 @@ function showAdmin(){
       <textarea id="desc" placeholder="Beschrijving"></textarea>
       <input id="old" type="number" placeholder="Oude prijs (€)">
       <input id="newp" type="number" placeholder="Nieuwe prijs (€)">
-      <input id="time" type="number" placeholder="Timer (seconden)">
+      <input id="time" type="number" placeholder="Timer (dagen)">
       <button id="save">Opslaan</button>
     `;
 
@@ -130,14 +137,14 @@ function showAdmin(){
       const desc = form.querySelector("#desc").value;
       const oldp = form.querySelector("#old").value;
       const newp = form.querySelector("#newp").value;
-      const time = parseInt(form.querySelector("#time").value);
+      const timeDays = parseInt(form.querySelector("#time").value);
 
-      if(!title || !newp || !time){
-        alert("Vul minimaal titel, nieuwe prijs en timer in");
+      if(!title || !newp || !timeDays){
+        alert("Vul minimaal titel, nieuwe prijs en dagen in");
         return;
       }
 
-      createDeal(title, desc, oldp, newp, time);
+      createDeal(title, desc, oldp, newp, timeDays);
       form.remove();
     };
   });
@@ -145,7 +152,6 @@ function showAdmin(){
 
 // Toon admin knop bij laden
 window.onload = showAdmin;
-
 
 /****************************
   FUNCTIE OM NIEUWE DEAL TE MAKEN
@@ -180,18 +186,19 @@ function createDeal(title, desc, oldp, newp, time){
 /****************************
   TIMER FUNCTIE VOOR NIEUWE DEALS
 *****************************/
-function startTimer(el, time){
+function startTimer(el, days) {
+  let time = days * 86400; // dagen -> seconden
+
   setInterval(() => {
-    let hours = Math.floor(time / 3600);
-    let minutes = Math.floor((time % 3600) / 60);
-    let seconds = time % 60;
+    let d = Math.floor(time / 86400);
+    let h = Math.floor((time % 86400) / 3600);
+    let m = Math.floor((time % 3600) / 60);
+    let s = time % 60;
 
     el.innerHTML =
-      `⏳ ${hours}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+      `⏳ ${d}d ${h.toString().padStart(2,'0')}h:${m.toString().padStart(2,'0')}m:${s.toString().padStart(2,'0')}s`;
 
     if(time > 0) time--;
     else el.innerHTML = "Actie verlopen";
-  },1000);
+  }, 1000);
 }
-
-
