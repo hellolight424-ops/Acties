@@ -242,29 +242,66 @@ body > * {
   margin: auto;
 }
 
-/* OVER ONS */
-.about-us {
-  max-width: 700px;
-  margin: auto;
-  padding: 25px;
-  background: #111111; /* donker */
-  border-radius: 12px;
-  box-shadow: 0 0 30px #ff0000, 0 0 30px #0000ff;
+/* Footer Balk */
+.footer {
+  width: 100%;
+  background: linear-gradient(90deg, #0000ff, #ff0000); /* mooie neon gradient */
+  padding: 40px 20px;
+  box-sizing: border-box;
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
 }
 
+/* About Us Binnen de Balk */
+.about-us {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  background: rgba(0,0,0,0.7); /* donker transparant paneel in de balk */
+  padding: 30px 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #0000ff, 0 0 20px #ff0000;
+}
+
+/* Kopjes en tekst */
 .about-us h3 {
   font-size: 28px;
   color: #ff0000;
-  text-shadow: 0 0 10px #ff0000, 0 0 15px #0000ff;
   margin-bottom: 15px;
+  text-shadow: 0 0 8px #ff0000, 0 0 12px #0000ff;
+}
+
+.about-us h4 {
+  font-size: 20px;
+  color: #00ffff;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .about-us p {
   font-size: 16px;
   line-height: 1.6;
-  margin-bottom: 25px;
-  text-shadow: 0 0 8px #0000ff, 0 0 10px #ff0000;
+  margin-bottom: 12px;
+  color: #ffffff;
 }
+
+.about-us .benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+.about-us .benefits li {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.about-us .team-signoff {
+  margin-top: 20px;
+  font-weight: bold;
+  color: #ff0000;
+}
+
+
 
 .contact-links {
   display: flex;
