@@ -1,28 +1,73 @@
-function createBalletje() {
-  const balletjesContainer = document.getElementById('balletjes-container');
-  const balletje = document.createElement('div');
-  balletje.className = 'balletje';
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
 
-  const startX = Math.random() * window.innerWidth;
-  balletje.style.left = `${startX}px`;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-  // Donkerrood of donkerblauw
-  const kleur = Math.random() > 0.5 ? '#ff0000' : '#0000ff';
-  balletje.style.backgroundColor = kleur;
-  balletje.style.color = kleur; // belangrijk voor glow
+const balls = [];
+const ballCount = 120;
 
-  const duration = 3 + Math.random() * 3;
-  balletje.style.animationDuration = `${duration}s`;
-
-  balletjesContainer.appendChild(balletje);
-
-  setTimeout(() => {
-    balletje.remove();
-  }, duration * 1000);
+// Maak neon ballen met variabele kleuren en pulserende glow
+for (let i = 0; i < ballCount; i++) {
+  balls.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 4 + 2,       // grootte van de bal
+    vx: (Math.random() - 0.5) * 0.3, 
+    vy: (Math.random() - 0.5) * 0.3,
+    colorBase: Math.random() > 0.5 ? [255, 0, 60] : [0, 94, 255], // RGB
+    glow: Math.random() * 15 + 10,   // blur
+    phase: Math.random() * Math.PI * 2 // voor pulseren
+  });
 }
 
-setInterval(createBalletje, 50);
+function animate() {
+  // Maak achtergrond deels transparant voor glow-trails
+  ctx.fillStyle = "rgba(0,0,0,0.1)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  balls.forEach(b => {
+    // Pulserende glow
+    const glowFactor = Math.sin(b.phase) * 5 + b.glow;
+    b.phase += 0.02;
+
+    // Update positie
+    b.x += b.vx;
+    b.y += b.vy;
+
+    // Wrap-around
+    if (b.x > canvas.width) b.x = 0;
+    if (b.x < 0) b.x = canvas.width;
+    if (b.y > canvas.height) b.y = 0;
+    if (b.y < 0) b.y = canvas.height;
+
+    // Teken neon bal
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgb(${b.colorBase[0]},${b.colorBase[1]},${b.colorBase[2]})`;
+    ctx.shadowColor = `rgb(${b.colorBase[0]},${b.colorBase[1]},${b.colorBase[2]})`;
+    ctx.shadowBlur = glowFactor;
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+// Responsiveness
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("keydown", e => {
+  if (e.key === "F12") e.preventDefault();
+  if (e.ctrlKey && e.shiftKey && e.key === "I") e.preventDefault();
+  if (e.ctrlKey && e.shiftKey && e.key === "C") e.preventDefault();
+  if (e.ctrlKey && e.shiftKey && e.key === "J") e.preventDefault();
+});
 
 /****************************
   TIMER VOOR BESTAANDE BLOKKEN
@@ -148,3 +193,4 @@ function startTimer(el, time){
     else el.innerHTML = "Actie verlopen";
   },1000);
 }
+
