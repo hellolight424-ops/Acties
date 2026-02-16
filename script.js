@@ -92,7 +92,7 @@ document.querySelectorAll('.timer').forEach(timer => {
 /****************************
   ADMIN CONTROLE (WACHTWOORD)
 *****************************/
-const ADMIN_PASSWORD = "Murat"; // <-- wijzig dit naar je eigen wachtwoord
+const ADMIN_PASSWORD = "654235235131322345243"; // <-- wijzig dit naar je eigen wachtwoord
 
 function showAdmin(){
   const input = prompt("Voer admin wachtwoord in:");
@@ -193,4 +193,5 @@ function startTimer(el, time){
     else el.innerHTML = "Actie verlopen";
   },1000);
 }
+
 
